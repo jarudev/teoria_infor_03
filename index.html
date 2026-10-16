@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0b0f19">
+<title>Laboratorio de códigos correctores — Cuestionario interactivo</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0f19;--panel:#151b2c;--panel2:#1b2540;--text:#f8fafc;--muted:#aab8cf;--violet:#8b5cf6;--cyan:#06b6d4;--lime:#ccfd51;--ok:#10b981;--bad:#fb7185;--border:#34415e}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 85% 0%,#202352 0%,transparent 36%),radial-gradient(circle at 0% 90%,#083544 0%,transparent 33%),var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif;min-height:100dvh}
+.wrap{max-width:1060px;margin:auto;padding:24px 18px 60px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:22px;flex-wrap:wrap}
+.brand{font-weight:800;letter-spacing:.03em;color:#e2d8ff}.pill{font-size:.82rem;border:1px solid #7c69a9;border-radius:50px;padding:7px 12px;background:#22233d;color:#d4c5fa}
+h1{font-size:clamp(1.6rem,4.4vw,2.9rem);margin:0 0 10px;letter-spacing:-.035em;line-height:1.12}
+h2{font-size:clamp(1.23rem,3vw,1.65rem);line-height:1.35;margin:16px 0 20px}
+p{margin:8px 0 14px}small,.muted{color:var(--muted)}
+.panel{background:linear-gradient(135deg,#182039,#111827);border:1px solid var(--border);border-radius:20px;padding:clamp(18px,3.5vw,32px);box-shadow:0 16px 44px #0003}
+.accent{color:var(--cyan)}.gradient{background:linear-gradient(90deg,var(--violet),var(--cyan));height:100%;border-radius:40px;transition:width .25s}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:18px 0}
+.stat{border:1px solid var(--border);background:var(--panel);border-radius:13px;padding:12px}
+.stat strong{display:block;font-size:1.3rem;font-variant-numeric:tabular-nums}
+.progress{height:12px;border-radius:40px;background:#263047;overflow:hidden;margin:10px 0}
+button,input{font:inherit}
+input{width:100%;background:#0e1629;color:white;border:1px solid #51607d;border-radius:11px;padding:12px;margin:8px 0 18px}
+input:focus,button:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+button{border:1px solid #697390;background:#26314f;color:var(--text);border-radius:12px;padding:11px 17px;cursor:pointer;font-weight:650}
+button:hover:not(:disabled){border-color:var(--cyan);filter:brightness(1.12)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.primary{background:linear-gradient(110deg,var(--violet),#176fa2);border-color:#876cf4}
+.success-btn{background:#0c715b;border-color:var(--ok)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:20px}
+.options{display:grid;gap:12px;margin:14px 0 20px}
+.option{text-align:left;width:100%;background:#1c2943;border:1px solid #455472;border-radius:13px;min-height:59px;padding:13px 16px;color:white;display:flex;gap:12px;align-items:center}
+.key{display:inline-grid;place-items:center;flex:none;width:31px;height:31px;border:1px solid #7182a2;border-radius:9px;color:#b6c4da;font-size:.86rem;font-weight:800}
+.option.correct{background:#0a3b32;border-color:var(--ok)}
+.option.incorrect{background:#502435;border-color:var(--bad)}
+.option.chosen .key{color:white;border-color:#fff}
+.feedback{margin-top:15px;border:1px solid var(--border);border-radius:12px;padding:16px;background:#111f35}
+.feedback.good{border-color:var(--ok)}.feedback.bad{border-color:var(--bad)}
+.navgrid{display:grid;grid-template-columns:repeat(10,1fr);gap:7px;margin:16px 0}
+.navgrid button{min-width:0;padding:9px 2px;border-radius:10px}
+.navgrid .active{border-color:var(--cyan);box-shadow:0 0 0 1px var(--cyan)}
+.navgrid .answered{background:#125343;border-color:#287969}
+.navgrid .pending{background:#242b41}
+.note{border-left:3px solid var(--lime);padding:8px 12px;background:#202737;border-radius:0 10px 10px 0}
+.result{font-size:clamp(2.3rem,8vw,5rem);font-weight:900;color:var(--lime);line-height:1.2}
+.list-result{display:grid;gap:10px;margin-top:20px}
+.result-row{border:1px solid var(--border);border-radius:11px;padding:12px;display:flex;justify-content:space-between;gap:12px}
+.hidden{display:none!important}
+a{color:#8adff5}
+footer{margin-top:26px;font-size:.84rem;color:var(--muted)}
+@media(max-width:650px){.navgrid{grid-template-columns:repeat(6,1fr)}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.wrap{padding:16px 12px 42px}.actions button{flex:1 1 140px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div class="brand">◈ INFOTHEORY · LAB</div><div class="pill">Códigos correctores · 30 preguntas</div></header>
+<section id="welcome" class="panel">
+ <h1>Desafío: rescata el mensaje</h1>
+ <p class="muted">Pon a prueba tus conocimientos sobre ruido, paridad, distancia de Hamming, códigos lineales y síndromes.</p>
+ <label for="student"><strong>Nombre del estudiante</strong></label>
+ <input id="student" type="text" maxlength="90" autocomplete="name" placeholder="Escribe tu nombre">
+ <p class="note">Cada pregunta tiene cuatro opciones y una sola correcta. Al responder se muestra inmediatamente la explicación y la respuesta queda fijada. Tu progreso se guarda en este navegador.</p>
+ <div class="actions"><button class="primary" id="begin">Comenzar o continuar →</button></div>
+</section>
+<section id="quiz" class="hidden">
+  <div class="stats">
+   <div class="stat"><small>Estudiante</small><strong id="studentLabel" style="font-size:1rem;overflow-wrap:anywhere"></strong></div>
+   <div class="stat"><small>Tiempo transcurrido</small><strong id="clock">00:00</strong></div>
+   <div class="stat"><small>Respondidas</small><strong id="count">0 / 30</strong></div>
+  </div>
+  <div class="progress" role="progressbar" aria-label="Preguntas respondidas" aria-valuemin="0" aria-valuemax="30" aria-valuenow="0" id="barWrap"><div id="bar" class="gradient" style="width:0%"></div></div>
+  <div class="panel">
+    <small id="qInfo"></small><h2 id="question"></h2>
+    <div id="answers" class="options"></div>
+    <div id="feedback" class="feedback hidden" role="status" aria-live="polite"></div>
+    <div class="actions">
+      <button id="prev">← Anterior</button><button id="next">Siguiente →</button><button id="finish" class="success-btn">Terminar y ver mi nota</button>
+    </div>
+  </div>
+  <p id="missingWarning" class="note hidden" role="alert"></p>
+  <h3>Ir a una pregunta</h3><nav id="nav" class="navgrid" aria-label="Navegación entre preguntas"></nav>
+</section>
+<section id="results" class="panel hidden">
+  <div class="pill" style="display:inline-block">Resultado final</div>
+  <h1 id="resultName"></h1>
+  <div class="result" id="resultScore"></div>
+  <p id="resultPercent"></p>
+  <p id="resultTime" class="muted"></p>
+  <div class="actions"><button class="primary" id="restart">Reiniciar cuestionario</button></div>
+  <h2>Resumen por pregunta</h2><div class="list-result" id="resultList"></div>
+</section>
+<footer>Material de estudio basado en: Pareja, Andeyro y Ojeda, <em>Introducción a la Informática</em>, sección 2.3; MacKay, <em>Information Theory, Inference, and Learning Algorithms</em>, capítulos 9–11 y 13. Aplicación local, sin registro ni envío de información.</footer>
+</div>
+<script>
+"use strict";
+const QUESTIONS = [{"question": "¿Qué problema resuelve la codificación de canal?", "options": ["Reducir exclusivamente el tamaño de los archivos", "Hacer fiable la comunicación cuando el medio introduce errores", "Cifrar mensajes para mantenerlos secretos", "Evitar que exista cualquier interferencia física"], "correct": 1, "explanation": "Los códigos de canal incorporan redundancia diseñada para recuperar información pese a alteraciones.", "source": "MacKay, cap. 9–11"}, {"question": "¿Qué describe mejor el ruido de un canal?", "options": ["Una perturbación que puede cambiar los símbolos recibidos", "Una clave secreta para acceder a los datos", "Una forma de comprimir información", "Un código binario sin ceros"], "correct": 0, "explanation": "El ruido altera la transmisión; no es una operación deliberada de compresión.", "source": "MacKay, cap. 9"}, {"question": "¿En qué consiste detectar errores?", "options": ["Restaurar siempre el mensaje exacto", "Medir únicamente la velocidad del canal", "Reconocer que el mensaje recibido es inconsistente", "Transformar automáticamente mensajes en imágenes"], "correct": 2, "explanation": "La detección identifica inconsistencias pero no necesariamente permite restaurar los datos.", "source": "Pareja, sección 2.3"}, {"question": "¿Qué aporta un código corrector sobre uno solo detector?", "options": ["Puede recuperar ciertos mensajes dañados sin retransmisión", "Elimina toda redundancia", "Impide que el canal tenga ruido", "Garantiza corregir cualquier cantidad de errores"], "correct": 0, "explanation": "La corrección puede recuperar el mensaje dentro de su capacidad diseñada; no es ilimitada.", "source": "MacKay, cap. 11"}, {"question": "¿Por qué se agrega redundancia al transmitir?", "options": ["Para complicar la lectura del mensaje", "Para esconder datos a terceros", "Para generar ruido artificial", "Para aportar pistas con las que comprobar o reparar datos"], "correct": 3, "explanation": "La redundancia estructurada permite realizar comprobaciones y, en ciertos códigos, localizar errores.", "source": "Pareja, sección 2.3"}, {"question": "¿Qué relación hay entre compresión y protección contra errores?", "options": ["Ambas siempre eliminan bits adicionales", "La compresión retira redundancia aprovechable y la protección añade redundancia estructurada", "Ambas garantizan corrección ilimitada", "La compresión elimina la necesidad del receptor"], "correct": 1, "explanation": "Cumplen objetivos distintos: eficiencia de representación frente a robustez ante errores.", "source": "MacKay, partes I y II"}, {"question": "En un código de repetición de tres copias, si se envía 111 y llega 101, ¿qué sugiere la mayoría?", "options": ["Que debe recuperarse 000", "Que no puede formularse ninguna hipótesis", "Que el símbolo original era 1", "Que tres errores son seguros"], "correct": 2, "explanation": "Dos posiciones conservan el 1; una decodificación por mayoría interpreta el cambio aislado como error.", "source": "MacKay, cap. 13"}, {"question": "¿Qué es una palabra de código?", "options": ["Una secuencia válida que produce el codificador", "Cualquier error observado", "La dirección IP del emisor", "Un mensaje en lenguaje natural exclusivamente"], "correct": 0, "explanation": "Las palabras de código pertenecen al conjunto de secuencias admitidas por la codificación.", "source": "MacKay, cap. 13"}, {"question": "¿Qué mide la distancia de Hamming entre cadenas de igual longitud?", "options": ["El número de caracteres en común", "El número de posiciones diferentes", "La longitud total de las dos cadenas juntas", "El número de ceros de la primera cadena"], "correct": 1, "explanation": "Cuenta posiciones en que las dos cadenas difieren, no coincidencias ni su longitud.", "source": "MacKay, cap. 13"}, {"question": "¿Cuál es la distancia de Hamming entre 10110 y 10011?", "options": ["1", "3", "4", "2"], "correct": 3, "explanation": "Difieren en la tercera y quinta posiciones: son dos cambios.", "source": "MacKay, cap. 13"}, {"question": "¿Cuál es la distancia de Hamming entre 0000 y 1111?", "options": ["0", "1", "2", "4"], "correct": 3, "explanation": "Cada una de las cuatro posiciones es distinta.", "source": "MacKay, cap. 13"}, {"question": "¿Qué se entiende por distancia mínima de un código?", "options": ["La menor distancia entre dos palabras de código diferentes", "La mayor distancia posible entre cadenas arbitrarias", "El número de mensajes transmitidos", "La cantidad de símbolos del alfabeto"], "correct": 0, "explanation": "Es la separación más pequeña entre dos palabras válidas distintas; influye en detectar y corregir.", "source": "MacKay, cap. 13"}, {"question": "Si un código tiene distancia mínima 3, ¿qué protección garantizada ofrece?", "options": ["Corregir cualquier error doble", "Corregir un error y detectar hasta dos, consideradas capacidades separadas", "Detectar solo un error y nunca corregir", "Corregir tres errores"], "correct": 1, "explanation": "Una separación mínima de tres permite corregir uno o detectar hasta dos, no ambas garantías simultáneas en ese extremo.", "source": "MacKay, cap. 13"}, {"question": "Si la distancia mínima de un código es 2, ¿qué puede garantizar?", "options": ["Corregir un error siempre", "Corregir dos errores", "Detectar un error, sin corrección garantizada de uno", "Detectar cualquier cantidad de errores"], "correct": 2, "explanation": "Distancia mínima dos distingue una alteración simple, pero puede dejar ambiguas dos palabras válidas al corregir.", "source": "MacKay, cap. 13"}, {"question": "En general, aumentar la distancia entre palabras válidas hace que...", "options": ["Haya más separación para detectar o corregir alteraciones", "Desaparezcan todos los costos de transmisión", "Sea imposible detectar errores", "El código se vuelva siempre más corto"], "correct": 0, "explanation": "Separar las palabras válidas crea margen contra las alteraciones, normalmente con un costo en redundancia.", "source": "MacKay, cap. 13"}, {"question": "¿Qué hace la decodificación al vecino más cercano?", "options": ["Elige siempre la cadena de más ceros", "Ignora los símbolos recibidos", "Selecciona la palabra válida que menos difiere de la recibida", "Selecciona la palabra válida más larga"], "correct": 2, "explanation": "Busca una palabra de código a menor distancia del bloque recibido; puede existir empate.", "source": "MacKay, cap. 13"}, {"question": "¿Qué dificultad aparece cuando dos palabras válidas están igual de cerca del bloque recibido?", "options": ["La transmisión es necesariamente perfecta", "Hay ambigüedad y puede requerirse una regla de desempate o declarar fallo", "Las palabras automáticamente se vuelven idénticas", "La distancia mínima se vuelve infinita"], "correct": 1, "explanation": "Un empate no ofrece una decisión inequívoca a partir de la distancia únicamente.", "source": "MacKay, cap. 13"}, {"question": "¿Qué identifica un bit de paridad par?", "options": ["Si el mensaje está cifrado", "La dirección del receptor", "La frecuencia del emisor", "Si la cantidad total de unos cumple la regla de paridad"], "correct": 3, "explanation": "El bit de comprobación ayuda a mantener paridad par y revela ciertos cambios.", "source": "Pareja, sección 2.3"}, {"question": "Un control de paridad simple suele fallar al detectar...", "options": ["Dos inversiones de bits en el mismo bloque", "Una única inversión de bit", "Una cantidad impar de inversiones", "La ausencia total de error"], "correct": 0, "explanation": "Dos cambios pueden conservar la paridad total y pasar inadvertidos.", "source": "Pareja, sección 2.3"}, {"question": "¿Cuál es una limitación del control de paridad simple?", "options": ["Detecta todos los patrones de error", "Corrige cualquier bit dañado", "No localiza por sí solo qué posición se alteró", "Reemplaza por completo la codificación de canal"], "correct": 2, "explanation": "Una única comprobación puede indicar inconsistencia, pero no señala de manera general la posición alterada.", "source": "Pareja, sección 2.3"}, {"question": "¿Qué significa el peso de Hamming de una palabra binaria?", "options": ["La cantidad de unos que contiene", "El número de palabras del código", "Su tamaño en bytes", "La cantidad de operaciones del receptor"], "correct": 0, "explanation": "El peso cuenta los unos de una secuencia binaria, como se usa al estudiar códigos lineales.", "source": "MacKay, cap. 13"}, {"question": "¿Cuál es el peso de Hamming de 1011010?", "options": ["3", "5", "4", "7"], "correct": 2, "explanation": "La cadena contiene cuatro unos.", "source": "MacKay, cap. 13"}, {"question": "¿Qué caracteriza un código binario lineal?", "options": ["Sus palabras válidas no admiten combinaciones", "La combinación binaria de palabras válidas sigue siendo una palabra válida", "Contiene solo una palabra", "Elimina la necesidad de paridad"], "correct": 1, "explanation": "La propiedad de cierre bajo suma binaria diferencia los códigos lineales de conjuntos arbitrarios.", "source": "MacKay, cap. 13"}, {"question": "¿Qué papel desempeña una matriz generadora en un código lineal?", "options": ["Detectar interferencia analógica", "Seleccionar canales físicos", "Medir potencia eléctrica", "Construir palabras codificadas a partir de datos fuente"], "correct": 3, "explanation": "La matriz generadora especifica cómo convertir los datos fuente en palabras válidas.", "source": "MacKay, cap. 13"}, {"question": "¿Para qué sirve una matriz de control de paridad?", "options": ["Probar las restricciones que deben cumplir las palabras válidas", "Aumentar la resolución de imágenes", "Determinar qué usuario puede entrar a una red", "Guardar nombres de estudiantes"], "correct": 0, "explanation": "Las restricciones de paridad verifican si un bloque recibido es compatible con el código.", "source": "MacKay, cap. 13"}, {"question": "¿Qué es el síndrome en decodificación lineal?", "options": ["El nombre del archivo comprimido", "Una secuencia de resultados de comprobaciones de paridad", "Una contraseña de canal", "La cantidad de mensajes del emisor"], "correct": 1, "explanation": "El síndrome resume qué comprobaciones fallan y puede aportar pistas sobre los errores.", "source": "MacKay, cap. 13"}, {"question": "¿Qué significa normalmente un síndrome distinto de cero?", "options": ["Que no ocurrió ningún cambio", "Que el mensaje es necesariamente el original", "Que el bloque recibido incumple alguna comprobación del código", "Que todas las posiciones están erradas"], "correct": 2, "explanation": "Un síndrome no nulo prueba que el bloque recibido no satisface todas las restricciones.", "source": "MacKay, cap. 13"}, {"question": "¿Un síndrome igual a cero garantiza que no hubo errores?", "options": ["Sí, incluso si el error convierte una palabra válida en otra", "Sí, porque todos los errores producen síndrome no nulo", "Sí, siempre que se usen ceros y unos", "No: algunos patrones de error pueden producir otra palabra válida"], "correct": 3, "explanation": "Un error no detectable puede transformar una palabra válida en otra; las comprobaciones siguen cumpliéndose.", "source": "MacKay, cap. 13"}, {"question": "En el código Hamming clásico de siete posiciones y cuatro datos, ¿cuántas posiciones son de comprobación?", "options": ["1", "2", "3", "4"], "correct": 2, "explanation": "La versión clásica emplea cuatro posiciones de información y tres posiciones de comprobación.", "source": "Pareja, sección 2.3.3; MacKay, cap. 13"}, {"question": "¿Qué aporta el código Hamming clásico de siete posiciones ante un único bit alterado?", "options": ["Permite identificar y corregir la posición dañada", "Garantiza reparar cualquier número de errores", "Evita que exista ruido", "Solo comprime los datos"], "correct": 0, "explanation": "La estructura de comprobaciones permite localizar un error simple y corregirlo.", "source": "Pareja, sección 2.3.3; MacKay, cap. 13"}];
+const KEY = "infotheory_quiz_ecc_30_v1";
+const $ = id => document.getElementById(id);
+const makeState = () => ({name:"",answers:Array(30).fill(null),current:0,startedAt:0,finishedAt:0});
+let state=makeState();
+try{
+  const stored=JSON.parse(localStorage.getItem(KEY)||"null");
+  if(stored&&typeof stored==="object"&&Array.isArray(stored.answers)&&stored.answers.length===30){
+    state={...makeState(),...stored};
+    state.answers=stored.answers.map(x=>Number.isInteger(x)&&x>=0&&x<4?x:null);
+    state.current=Math.max(0,Math.min(29,Number(state.current)||0));
+  }
+}catch(e){console.warn("No se pudo recuperar el progreso:",e)}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state))}catch(e){console.warn("No se pudo guardar en este navegador.",e)}};
+const fmtTime=seconds=>`${String(Math.floor(seconds/60)).padStart(2,"0")}:${String(seconds%60).padStart(2,"0")}`;
+const duration=()=> state.startedAt?Math.max(0,Math.floor(((state.finishedAt||Date.now())-state.startedAt)/1000)):0;
+function clockTick(){$("clock").textContent=fmtTime(duration())}
+function show(section){["welcome","quiz","results"].forEach(id=>$(id).classList.toggle("hidden",id!==section))}
+function answeredCount(){return state.answers.filter(x=>x!==null).length}
+function render(){
+ if(state.finishedAt){show("results");renderResults();return}
+ show("quiz");$("studentLabel").textContent=state.name;
+ const i=state.current,q=QUESTIONS[i],selected=state.answers[i];
+ $("qInfo").textContent=`Pregunta ${i+1} de ${QUESTIONS.length} · ${q.source}`;
+ $("question").textContent=q.question;
+ $("answers").replaceChildren();
+ q.options.forEach((option,j)=>{
+   const b=document.createElement("button");
+   b.className="option";b.type="button";
+   if(selected!==null&&j===q.correct)b.classList.add("correct");
+   if(selected===j){b.classList.add("chosen");if(j!==q.correct)b.classList.add("incorrect")}
+   const k=document.createElement("span");k.className="key";k.textContent="ABCD"[j];
+   const t=document.createElement("span");t.textContent=option;
+   b.append(k,t);b.disabled=selected!==null;
+   b.setAttribute("aria-label",`Opción ${"ABCD"[j]}: ${option}`);
+   b.addEventListener("click",()=>answer(j));
+   $("answers").append(b);
+ });
+ const fb=$("feedback");
+ fb.className="feedback"+(selected===null?" hidden":selected===q.correct?" good":" bad");
+ if(selected!==null){
+   fb.replaceChildren();
+   const h=document.createElement("strong");h.textContent=selected===q.correct?"✓ Correcto":"✕ Respuesta incorrecta";
+   const p=document.createElement("p");p.textContent=q.explanation;
+   const p2=document.createElement("small");p2.textContent=`Respuesta correcta: ${"ABCD"[q.correct]}. ${q.options[q.correct]}`;
+   fb.append(h,p,p2);
+ }
+ $("prev").disabled=i===0;$("next").disabled=i===29;
+ const count=answeredCount();$("count").textContent=`${count} / 30`;
+ $("bar").style.width=`${count/30*100}%`;$("barWrap").setAttribute("aria-valuenow",String(count));
+ $("nav").replaceChildren();
+ QUESTIONS.forEach((_,n)=>{
+   const b=document.createElement("button");b.type="button";b.textContent=n+1;
+   b.className=(state.answers[n]!==null?"answered":"pending")+(n===state.current?" active":"");
+   b.setAttribute("aria-label",`Pregunta ${n+1}: ${state.answers[n]===null?"pendiente":"respondida"}`);
+   b.addEventListener("click",()=>move(n));$("nav").append(b);
+ });
+ clockTick();
+}
+function answer(choice){
+ const i=state.current;
+ if(state.answers[i]!==null)return;
+ state.answers[i]=choice;save();render();
+}
+function move(i){state.current=Math.max(0,Math.min(29,i));$("missingWarning").classList.add("hidden");save();render();window.scrollTo({top:0,behavior:"smooth"})}
+function finish(){
+ const missing=state.answers.map((a,i)=>a===null?i+1:null).filter(Boolean);
+ if(missing.length){
+   $("missingWarning").classList.remove("hidden");
+   $("missingWarning").textContent=`⚠️ Te faltan ${missing.length} preguntas: ${missing.join(", ")}. Puedes revisarlas antes de cerrar la evaluación.`;
+   const agree=confirm(`Hay ${missing.length} pregunta(s) sin responder. Se contarán como incorrectas. ¿Deseas terminar de todas formas?`);
+   if(!agree){move(missing[0]-1);return}
+ }
+ state.finishedAt=Date.now();save();render();
+}
+function renderResults(){
+ const correct=QUESTIONS.reduce((acc,q,i)=>acc+(state.answers[i]===q.correct?1:0),0);
+ $("resultName").textContent=`¡Terminaste, ${state.name}!`;
+ $("resultScore").textContent=`${correct} / 30`;
+ $("resultPercent").textContent=`${Math.round(correct/30*100)}% de aciertos · ${30-answeredCount()} sin responder`;
+ $("resultTime").textContent=`Tiempo empleado: ${fmtTime(duration())}`;
+ $("resultList").replaceChildren();
+ QUESTIONS.forEach((q,i)=>{
+   const row=document.createElement("div");row.className="result-row";
+   const left=document.createElement("span");left.textContent=`${i+1}. ${q.question}`;
+   const right=document.createElement("strong");const a=state.answers[i];
+   right.textContent=a===null?"Sin responder":a===q.correct?"✓ Correcta":"✕ Incorrecta";
+   right.style.color=a===q.correct?"#65efbd":"#ff9bb0";
+   row.append(left,right);$("resultList").append(row);
+ });
+}
+$("student").value=state.name;
+$("begin").addEventListener("click",()=>{
+ const name=$("student").value.trim();
+ if(!name){$("student").focus();alert("Escribe el nombre del estudiante.");return}
+ state.name=name;if(!state.startedAt)state.startedAt=Date.now();
+ save();render();
+});
+$("prev").addEventListener("click",()=>move(state.current-1));
+$("next").addEventListener("click",()=>move(state.current+1));
+$("finish").addEventListener("click",finish);
+$("restart").addEventListener("click",()=>{
+ if(!confirm("¿Reiniciar el cuestionario y borrar todas las respuestas guardadas?"))return;
+ state=makeState();save();$("student").value="";show("welcome");window.scrollTo(0,0);
+});
+if(state.finishedAt){render()}
+else if(state.startedAt&&state.name){render()}
+else{show("welcome")}
+setInterval(()=>{if(state.startedAt&&!state.finishedAt)clockTick()},1000);
+</script>
+</body>
+</html>
